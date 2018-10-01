@@ -1,3 +1,5 @@
+
+
 function initialize() {
     var options = {atmosphere: true, center: [42, -73], zoom: 0};
     var earth = new WE.map('earth_div', options);
@@ -6,6 +8,8 @@ function initialize() {
       maxZoom: 5,
       attribution: 'NASA'
     }).addTo(earth);
+    var marker = WE.marker([44.423691,-110.588516]).addTo(earth);
+    marker.bindPopup('<b>Hello world!</b>');
   }
 
   var NPMap = {
