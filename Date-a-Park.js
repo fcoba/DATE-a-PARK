@@ -8,9 +8,17 @@ function initialize() {
       maxZoom: 5,
       attribution: 'NASA'
     }).addTo(earth);
-    var marker = WE.marker([44.423691,-110.588516]).addTo(earth);
-    marker.bindPopup('<b>Hello world!</b>');
+
+    var yellowstone = WE.marker([44.423691,-110.588516]).addTo(earth);
+    yellowstone.bindPopup('<img src="https://www.nps.gov/yell/planyourvisit/images/stats2013-17.png" style="width:170%;height: 170%;">');
+
+    var redwoods = WE.marker([41.213181,-124.004631]).addTo(earth);
+    redwoods.bindPopup('<iframe width="300" height="400" src="https://www.youtube.com/embed/C9LHjV48e9s" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
+
+   
   }
+
+  
 
   var NPMap = {
     div: 'map',
