@@ -15,20 +15,26 @@
       <title>WebGL Earth API: Satellite</title>
     </head>
     <body onload="initialize()">
-      <div class="row">
-        <div id="earth_div"></div>
-        <div id="map"></div>
-      </div>
+      <div class="container-fluid bg-dark">
+        <div class="nav bg-light">
+          <span class="offset-1">Project</span>
+        </div>
+        <div class="row">
+          <div id="earth_div" class="col-5 offset-1"></div>
+          <div id="map" class="col-5"></div>
+        </div>
 
-      <div class="row mt-3">
-        <form class="col-7 offset-1">
-          <div class="row" id="activityOptions"></div>
+        <div class="row mt-3">
+          <form class="col-10 offset-1" onsubmit="submitActivities()">
+            <div class="row" id="activityOptions"></div>
 
-          <div class="row">
-            <input type="submit" value="Submit">
-          </div>
-        </form>
+            <div class="row">
+              <button type='button' (onclick)="submitActivities()">submit</button> 
+            </div>
+          </form>
+        </div>
       </div>
+      
       
       <script src="https://www.nps.gov/lib/npmap.js/4.0.0/npmap-bootstrap.js"></script>
   </body>

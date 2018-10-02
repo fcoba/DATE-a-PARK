@@ -16,13 +16,27 @@ function initialize() {
   redwoods.bindPopup('<iframe width="300" height="400" src="https://www.youtube.com/embed/C9LHjV48e9s" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
   
   d3.json('/activities').then(activities => {
-    console.log(activities);
-    // what do we do with the activities here?????
     activities.forEach(option => {
-      d3.select('#activityOptions').append('input').attr('type','checkbox');
+      let div = d3.select('#activityOptions')
+        .append('div')
+        .attr('class', 'col-4');
+
+      div.append('input')
+        .attr('type','checkbox')
+        .attr('class','col-1');
+
+      div.append('span')
+        .text(() => {
+          if (option.length > 20) {
+            return option[0].slice(0, 20);
+          } else {
+            return option[0];
+          }
+        })
+        .attr('class','text-white col-10');
     });
     
-  })
+  });
 }
 
   
@@ -45,3 +59,8 @@ var NPMap = {
     }
   ]
 };
+
+
+function submitActivities() {
+  console.log("HIIII");
+}
