@@ -1,0 +1,49 @@
+html, body {
+      padding: 0; 
+      margin: 0;
+}
+
+#earth_div {
+      top: 0;
+      /* right: 0; */
+      /* bottom: 0; */
+      left: 0;
+      height: 500px;
+      /* width: 50%; */
+      background-color: #000;
+      /* position: absolute !important; */
+      float: left;
+}
+
+#map {
+  height: 500px;
+  position: relative;
+  /* width: 50%; */
+  float: right;
+}
+
+.container {
+      position: relative;
+      text-align: center;
+      color:  #000;
+  }
+
+  /* Centered text */
+.centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+  }
+
+  .thumbnail {
+      position: relative;
+  }
+  
+  .caption {
+      position: absolute;
+      top: 45%;
+      left: 0;
+      width: 100%;
+  } 

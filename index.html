@@ -1,27 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bigfoot Sightings </title>
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel ="stylesheet" type = "text/css" href="{{ url_for('static', filename='css/Date-a-Park.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="http://www.webglearth.com/v2/api.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="{{ url_for('static', filename='js/Date-a-Park.js') }}">
+    </script>
+    <style>
+      </style>
+      <title>WebGL Earth API: Satellite</title>
+  </head>
 
-    <!-- Leaflet CSS & JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
-    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-    crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
-    integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
-    crossorigin=""></script>
-</head>
+    <body onload="initialize()">
 
-<body>
-    <div id="map"></div>
-    <!-- API key -->
-    <script src="{{ url_for('static', filename='js/config.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
-    <!-- old plotly link: <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
-    <!-- <script src="{{ url_for('static', filename='js/app.js') }}"></script>-->
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-</body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Yottabytes</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+        
+          <div class="thumbnail text-center bg-dark">
+          <!-- <div class="container bg-dark"> -->
+              <img src="/static/images/redwoods.jpg" alt="redwoods" style="width:100%;">       
+              <h2 class="font-weight-light mb-0">Find your park</h2>
+              <!-- <div class="centered">Find your park</div> -->
+              <div class="caption">
+                <p>Lorem ipsum sdf sdf dsf dsf sdf dsf sdflkjdsflkjsdlfkjsldf</p>
+              </div>
+
+              <!-- <div class="search-form-block bg-dark">  
+                  <div class="banner_text">
+                      <h2 class=heading-1>
+                        Find your next favorite park
+                      </h2>
+                    </div> -->
+          </div>
+
+         
+
+        </div> 
+
+      <div class="container-fluid bg-dark">
+        <div class="navbar navbar-dark bg-dark">
+          <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"> -->
+            <!-- <span class="sr-only">Toggle Navigation</span> -->
+            <!-- <span class="icon-bar"></span> -->
+          
+            <!-- <a class="navbar-brand" href="#">Hello World!</a> --> 
+          <!-- <span class="offset-1">Project</span> -->
+        </div>
+
+        <div class="collapse navbar-collapse bg-dark" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-dark">
+            <li class="Active">
+              <a href="#">Hello World!</a>
+            </li>
+            <li>
+              <a href="#">Links Here!!</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <div id="earth_div" class="col-5 offset-1"></div>
+          <div id="map" class="col-5"></div>
+        </div>
+
+        <div class="row mt-3">
+          <form class="col-10 offset-1" onsubmit="submitActivities()">
+            <div class="row" id="activityOptions"></div>
+
+            <div class="row">
+              <button type='button' (onclick)="submitActivities()">submit</button> 
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      
+      <script src="https://www.nps.gov/lib/npmap.js/4.0.0/npmap-bootstrap.js"></script>
+  </body>
 </html>
