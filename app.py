@@ -11,7 +11,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 import sqlite3 as sql
@@ -52,6 +52,27 @@ def activities():
     con.close()
 
     return data
+
+@app.route("/send", methods=["GET"])
+def send():
+    # need the names of things that are checked
+    # loop through request.form (should be dictionary)
+    # then get only the "checked" ones
+    if request.method == "GET":
+        print("Hello")
+        print(request.args)
+        return redirect("/")
+
+    # construct SQL query
+    # SELECT (?) FROM (?) WHERE ... (substitute the checked activities)
+    # con = sql.connect('./static/data/date_a_park_SQLITEDB')
+    # cursor = con.cursor()
+    # cursor.execute("SELECT DISTINCT ACTIVITYNAME FROM activities;")
+
+    # Send back the retrieved results & redirect back to home page
+    # Use the returned results in JS and change map layer with markers
+    # con.close()
+    return 
 
 if __name__ == "__main__":
     app.run(debug=True)

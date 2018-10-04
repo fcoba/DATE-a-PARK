@@ -25,11 +25,12 @@
         </div>
 
         <div class="row mt-3">
-          <form class="col-10 offset-1" onsubmit="submitActivities()">
+          <form class="col-10 offset-1" method="GET" action="/send" role="form", name="activityForm">
             <div class="row" id="activityOptions"></div>
 
             <div class="row">
-              <button type='button' (onclick)="submitActivities()">submit</button> 
+              <!-- <button type='button' (onclick)="submitActivities()">submit</button>  -->
+              <input type="submit">
             </div>
           </form>
         </div>

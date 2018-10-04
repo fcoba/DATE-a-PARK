@@ -19,11 +19,12 @@ function initialize() {
     activities.forEach(option => {
       let div = d3.select('#activityOptions')
         .append('div')
-        .attr('class', 'col-4');
+        .attr('class', 'col-4 form-group');
 
       div.append('input')
         .attr('type','checkbox')
-        .attr('class','col-1');
+        .attr('class','form-control col-1')
+        .attr('id',option[0]) .attr('name',option[0]);
 
       div.append('span')
         .text(() => {
@@ -33,7 +34,8 @@ function initialize() {
             return option[0];
           }
         })
-        .attr('class','text-white col-10');
+        .attr('class','text-white col-9')
+        .attr('for',option[0]);
     });
     
   });
@@ -61,6 +63,6 @@ var NPMap = {
 };
 
 
-function submitActivities() {
-  console.log("HIIII");
+function submitActivities(e) {
+  console.log("HIIII", e);
 }
