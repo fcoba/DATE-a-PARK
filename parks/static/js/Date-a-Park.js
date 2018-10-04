@@ -1,7 +1,10 @@
+var options = {atmosphere: true, center: [42, -73], zoom: 0};
+var earth = new WE.map('earth_div', options);
+var WEmarkers = [];
 function initialize() {
 
-  var options = {atmosphere: true, center: [42, -73], zoom: 0};
-  var earth = new WE.map('earth_div', options);
+  
+  
   WE.tileLayer('http://tileserver.maptiler.com/nasa/{z}/{x}/{y}.jpg', {
     minZoom: 0,
     maxZoom: 5,
@@ -14,17 +17,22 @@ function initialize() {
   var redwoods = WE.marker([41.213181,-124.004631]).addTo(earth);
   redwoods.bindPopup('<iframe width="300" height="400" src="https://www.youtube.com/embed/C9LHjV48e9s" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
   
+  WEmarkers.push(yellowstone);
+  WEmarkers.push(redwoods);
+
   // Dynamically render the checkboxes - one box per activity
   d3.json('/activities').then(activities => {
     activities.forEach(option => {
       let div = d3.select('#activityOptions')
         .append('div')
-        .attr('class', 'col-3 form-group');
+        .attr('class', 'col-3');
 
       div.append('input')
         .attr('type','checkbox')
-        .attr('class','form-control col')
-        .attr('id',option[0]) .attr('name',option[0]);
+        .attr('class','col')
+        .attr('style','width: 15px')
+        .attr('id',option[0])
+        .attr('name',option[0]);
 
       div.append('span')
         .text(() => {
@@ -71,7 +79,7 @@ function submit() {
     type: 'GET',
     success: getParks,
     error: function(error) {
-      removeAllMarkers(NPMap.config.L);
+      removeAllMarkers(NPMap.config.L, earth);
       throw new Error("Could not complete query. See Flask logs.", error);
     }
   });
@@ -79,7 +87,7 @@ function submit() {
 
 function getParks(response) {
   var map = NPMap.config.L;
-  removeAllMarkers(map, renderMarkers, response);
+  removeAllMarkers(map, earth, renderMarkers, response);
 }
 
 /**
@@ -90,37 +98,46 @@ function getParks(response) {
  * @param {*} cb 
  * @param {*} data 
  */
-function removeAllMarkers(map, cb, data) {
+function removeAllMarkers(map, earth, cb, data) {
   map.eachLayer((layer) => {
     // remove existing markers
     if (!layer.hasOwnProperty('_url')) {
       map.removeLayer(layer);
     }
   });
+  WEmarkers.forEach(marker => {
+    marker.removeFrom(earth);
+  });
+  WEmarkers = WEmarkers.slice(0,0);
+
   if (cb) {
-    cb(data, map);
+    cb(data, map, earth);
   }
 }
+
 
 /**
  * filterData = Array ... [name, lat, long]
  * @param {*} filterData 
  */
-function renderMarkers(filterData, map) {
+function renderMarkers(filterData, map, earth) {
   var geojsonMarkerOptions = {
     radius: 8,
-    iconUrl: '{{ url_for("static", filename="images/park_pin.png") }}',
-    fillColor: "#ff7800",
-    color: "#000",
+    // iconUrl: '{{ url_for("static", filename="images/park_pin.png") }}',
+    fillColor: "#609321",
+    color: "#609321",
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
   };
+  console.log('icon', geojsonMarkerOptions);
   filterData.forEach(val => {
     var coord = {
       lat: parseFloat(val[1], 10),
       lng: parseFloat(val[2], 10)
     };
     L.marker(coord, geojsonMarkerOptions).addTo(map);
+    var mark = WE.marker(coord, geojsonMarkerOptions).addTo(earth);
+    WEmarkers.push(mark);
   });
 }

@@ -32,13 +32,9 @@ def home():
 @app.route("/activities")
 def activities():
     """ Get all the activities """
-    # stmt = db.session.query(activities.ACTIVITYNAME).distinct.statement
-    # stmt = db.session.query(activities.ACTIVITYNAME).statement
-    # df = pd.read_sql_query(stmt, db.session.bind)
     con = sql.connect('./static/data/date_a_park_SQLITEDB')
     cursor = con.cursor()
-    cursor.execute("SELECT DISTINCT ACTIVITYNAME FROM activities;")
-    # cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    cursor.execute("SELECT DISTINCT ACTIVITYNAME FROM activities ORDER BY ACTIVITYNAME ASC;")
     data = jsonify(cursor.fetchall())
     con.close()
 
