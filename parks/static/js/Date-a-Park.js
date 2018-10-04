@@ -1,6 +1,5 @@
-
-
 function initialize() {
+
   var options = {atmosphere: true, center: [42, -73], zoom: 0};
   var earth = new WE.map('earth_div', options);
   WE.tileLayer('http://tileserver.maptiler.com/nasa/{z}/{x}/{y}.jpg', {
@@ -40,10 +39,12 @@ function initialize() {
     
   });
 }
-
   
 var NPMap = {
   div: 'map',
+  baseLayers: [
+    'openstreetmap'
+  ],
   overlays: [
     {
       popup: {
@@ -57,12 +58,43 @@ var NPMap = {
         }
       },
       type: 'geojson',
-      url: 'https://www.nps.gov/lib/npmap.js/4.0.0/examples/data/national-parks.geojson'
+      url: '/parks'
     }
   ]
 };
 
-
-function submitActivities(e) {
-  console.log("HIIII", e);
+function submit() {  
+  var a = $.ajax({
+    url: '/send',
+    data: $('form').serialize(),
+    type: 'GET',
+    success: getParks,
+    error: function(error) {
+        console.log(error);
+    }
+  });
 }
+
+function getParks(response) {
+  // console.log('hi hi ... ', response);
+  // var map = L.map('map').setView([39, -98], 3);
+  // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  //   maxZoom: 18,
+  //   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  // }).addTo(map);
+  console.log("main map", NPMap.config.L);
+  console.log("overlap = ", NPMap.config.overlays[0].L);
+  var overlay = NPMap.config.overlays[0].L;
+  map._layers = [];
+}
+
+function renderInitialMarkers() {
+  var geojsonFeature = $.getJSON('/parks','',data => data);
+
+  L.geoJSON(geojsonFeature, {
+    pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    }
+  }).addTo(map);
+}
+
