@@ -14,26 +14,27 @@ function initialize() {
   var redwoods = WE.marker([41.213181,-124.004631]).addTo(earth);
   redwoods.bindPopup('<iframe width="300" height="400" src="https://www.youtube.com/embed/C9LHjV48e9s" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
   
+  // Dynamically render the checkboxes - one box per activity
   d3.json('/activities').then(activities => {
     activities.forEach(option => {
       let div = d3.select('#activityOptions')
         .append('div')
-        .attr('class', 'col-4 form-group');
+        .attr('class', 'col-3 form-group');
 
       div.append('input')
         .attr('type','checkbox')
-        .attr('class','form-control col-1')
+        .attr('class','form-control col')
         .attr('id',option[0]) .attr('name',option[0]);
 
       div.append('span')
         .text(() => {
-          if (option.length > 20) {
-            return option[0].slice(0, 20);
+          if (option[0].length > 20) {
+            return option[0].slice(0, 20) + "...";
           } else {
             return option[0];
           }
         })
-        .attr('class','text-white col-9')
+        .attr('class','text-white col')
         .attr('for',option[0]);
     });
     
@@ -70,31 +71,56 @@ function submit() {
     type: 'GET',
     success: getParks,
     error: function(error) {
-        console.log(error);
+      removeAllMarkers(NPMap.config.L);
+      throw new Error("Could not complete query. See Flask logs.", error);
     }
   });
 }
 
 function getParks(response) {
-  // console.log('hi hi ... ', response);
-  // var map = L.map('map').setView([39, -98], 3);
-  // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-  //   maxZoom: 18,
-  //   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  // }).addTo(map);
-  console.log("main map", NPMap.config.L);
-  console.log("overlap = ", NPMap.config.overlays[0].L);
-  var overlay = NPMap.config.overlays[0].L;
-  map._layers = [];
+  var map = NPMap.config.L;
+  removeAllMarkers(map, renderMarkers, response);
 }
 
-function renderInitialMarkers() {
-  var geojsonFeature = $.getJSON('/parks','',data => data);
-
-  L.geoJSON(geojsonFeature, {
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
+/**
+ * Remove markers from the map (to reset it). Then, if given
+ * a "cb" (callback function), execute that function!
+ * 
+ * @param {*} map 
+ * @param {*} cb 
+ * @param {*} data 
+ */
+function removeAllMarkers(map, cb, data) {
+  map.eachLayer((layer) => {
+    // remove existing markers
+    if (!layer.hasOwnProperty('_url')) {
+      map.removeLayer(layer);
     }
-  }).addTo(map);
+  });
+  if (cb) {
+    cb(data, map);
+  }
 }
 
+/**
+ * filterData = Array ... [name, lat, long]
+ * @param {*} filterData 
+ */
+function renderMarkers(filterData, map) {
+  var geojsonMarkerOptions = {
+    radius: 8,
+    iconUrl: '{{ url_for("static", filename="images/park_pin.png") }}',
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  };
+  filterData.forEach(val => {
+    var coord = {
+      lat: parseFloat(val[1], 10),
+      lng: parseFloat(val[2], 10)
+    };
+    L.marker(coord, geojsonMarkerOptions).addTo(map);
+  });
+}
