@@ -31,7 +31,7 @@ def home():
 @app.route("/activities")
 def activities():
     """ Get all the activities """
-    db_path = os.path.join('./', 'static','data','date_a_park_SQLITEDB')
+    db_path = os.path.join('.', 'static','data','date_a_park_SQLITEDB')
     con = sql.connect(db_path)
     cursor = con.cursor()
     cursor.execute("SELECT DISTINCT ACTIVITYNAME FROM activities ORDER BY ACTIVITYNAME ASC;")
@@ -65,7 +65,7 @@ def send():
         print(query)
         # Now we need the SQL query
         
-        db_path = os.path.join('/', 'static','data','date_a_park_SQLITEDB')
+        db_path = os.path.join('.', 'static','data','date_a_park_SQLITEDB')
         con = sql.connect(db_path)
         con.text_factory = lambda x: str(x, 'utf-8')
         cursor = con.cursor()
@@ -107,7 +107,7 @@ def send():
 
 @app.route("/parks")
 def parks():
-    return jsonify(json.load(open(os.path.join('./', 'static', 'data', 'parks.geojson'))))
+    return jsonify(json.load(open(os.path.join('.', 'static', 'data', 'parks.geojson'))))
 
 if __name__ == "__main__":
     app.run(debug=True)
