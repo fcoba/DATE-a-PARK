@@ -20,10 +20,9 @@ app = Flask(__name__, static_folder="static")
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db/date_a_park.sqlite"
-# db = SQLAlchemy(app)
+db = SQLAlchemy(app)
 
-# from .models import *
-
+from models import *
 
 # Create a route that renders index.html template
 @app.route("/")
@@ -110,7 +109,7 @@ def send():
 @app.route("/parks")
 def parks():
     # return jsonify(json.load(open(os.path.join('.', 'static', 'data', 'parks.geojson' ))))
-    return jsonify(json.load(open(os.path.join('http://localhost:8080' + port, 'static', 'data', 'parks.geojson'))))
+    return jsonify(json.load(open(os.path.join('.', 'static','data', 'parks.geojson'))))
 
 if __name__ == "__main__":
     app.run(debug=True)
