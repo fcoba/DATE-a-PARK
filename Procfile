@@ -1,1 +1,1 @@
-web: gunicorn park.app:app
+web: gunicorn parks.app:app
