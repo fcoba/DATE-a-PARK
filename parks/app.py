@@ -110,7 +110,7 @@ def send():
 @app.route("/parks")
 def parks():
     # return jsonify(json.load(open(os.path.join('.', 'static', 'data', 'parks.geojson' ))))
-    return jsonify(json.load(open(os.path.join('http://0.0.0.0:' + port, 'static', 'data', 'parks.geojson'))))
+    return jsonify(json.load(open(os.path.join('http://127.0.0.1:5000/:' + port, 'static', 'data', 'parks.geojson'))))
 
 if __name__ == "__main__":
     app.run(debug=True)
