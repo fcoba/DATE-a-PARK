@@ -15,7 +15,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import sqlite3 as sql
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db/date_a_park.sqlite"
 # db = SQLAlchemy(app)
