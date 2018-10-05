@@ -20,7 +20,7 @@ app = Flask(__name__, static_folder="static")
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db/date_a_park.sqlite"
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 # from .models import *
 
