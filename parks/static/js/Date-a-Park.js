@@ -57,7 +57,7 @@ var NPMap = {
   overlays: [
     {
       popup: {
-        description: 'The alpha code is {{Code}}',
+        // description: 'The alpha code is {{Code}}',
         title: '{{Name}}'
       },
       styles: {
@@ -80,6 +80,7 @@ function submit() {
     success: getParks,
     error: function(error) {
       removeAllMarkers(NPMap.config.L, earth);
+      alert("Could not complete query. See Flask logs.");
       throw new Error("Could not complete query. See Flask logs.", error);
     }
   });
@@ -117,27 +118,44 @@ function removeAllMarkers(map, earth, cb, data) {
 
 
 /**
- * filterData = Array ... [name, lat, long]
+ * filterData = Array ... 
+ * [
+ *  ...
+ *  [name, lat, long],
+ *  ...
+ * ]
  * @param {*} filterData 
  */
 function renderMarkers(filterData, map, earth) {
   var geojsonMarkerOptions = {
     radius: 8,
-    // iconUrl: '{{ url_for("static", filename="images/park_pin.png") }}',
+    iconUrl: '/static/images/park_pin.png',
     fillColor: "#609321",
     color: "#609321",
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
   };
-  console.log('icon', geojsonMarkerOptions);
+  var treeIcon = L.icon({
+    iconUrl: '/static/images/park_pin.png',
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 40], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+
+    // shadowUrl: 'leaf-shadow.png',
+  });
   filterData.forEach(val => {
     var coord = {
       lat: parseFloat(val[1], 10),
       lng: parseFloat(val[2], 10)
     };
-    L.marker(coord, geojsonMarkerOptions).addTo(map);
-    var mark = WE.marker(coord, geojsonMarkerOptions).addTo(earth);
+    var marker = L.marker(coord, {icon: treeIcon}).addTo(map);
+    marker.bindPopup(val[0]);
+    var mark = WE.marker(coord, '/static/images/park_pin.png').addTo(earth);
+    mark.bindPopup(val[0]);
+  
     WEmarkers.push(mark);
   });
 }
