@@ -32,7 +32,7 @@ def home():
 @app.route("/activities")
 def activities():
     """ Get all the activities """
-    con = sql.connect('./static/data/date_a_park_SQLITEDB')
+    con = sql.connect('/static/data/date_a_park_SQLITEDB')
     cursor = con.cursor()
     cursor.execute("SELECT DISTINCT ACTIVITYNAME FROM activities ORDER BY ACTIVITYNAME ASC;")
     data = jsonify(cursor.fetchall())
@@ -65,7 +65,7 @@ def send():
         print(query)
         # Now we need the SQL query
         
-        con = sql.connect('./static/data/date_a_park_SQLITEDB')
+        con = sql.connect('/static/data/date_a_park_SQLITEDB')
         con.text_factory = lambda x: str(x, 'utf-8')
         cursor = con.cursor()
         # # cursor.execute("select name from sqlite_master where type = 'table';")
@@ -106,7 +106,7 @@ def send():
 
 @app.route("/parks")
 def parks():
-    return jsonify(json.load(open('./static/data/parks.geojson')))
+    return jsonify(json.load(open('/static/data/parks.geojson')))
 
 if __name__ == "__main__":
     app.run(debug=True)
