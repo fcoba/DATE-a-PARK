@@ -55,15 +55,18 @@ def send():
         query = "SELECT DISTINCT parks.NAME, parks.LAT, parks.LONG FROM parks "
         query += "INNER JOIN activities ON parks.ID = activities.ID "
         
-        query += "WHERE (" # activities.ACTIVITYNAME = "
+        query += "WHERE activities.ACTIVITYNAME in ("
         for activity in form_data:
-            query += "activities.ACTIVITYNAME = '" + activity + "' AND "
+            # query += "activities.ACTIVITYNAME = '" + activity + "' AND "
+            query += "'" + activity + "' , "
 
         # remove that last " AND " (5 characters)
-        query = query[:-5]
+        query = query[:-3]
+        # query = query[:-5]
         query += ");"
 
         print(query)
+        # console.log(query)
         # Now we need the SQL query
         
         db_path = os.path.join('.', 'static','data','date_a_park_SQLITEDB')
@@ -75,8 +78,6 @@ def send():
         data = cursor.fetchall()
         # names = list(map(lambda x: x[0], cursor.description))
         # print(names)
-
-        
 
         return jsonify(data)
         # results = db.session.query(Parks.name, Parks.lat, Parks.lon).all()
