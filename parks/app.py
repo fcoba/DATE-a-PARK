@@ -47,8 +47,6 @@ def send():
     # loop through request.form (should be dictionary)
     # then get only the "checked" ones
     if request.method == "GET":
-        print("Hello")
-        print(request.args)
         form_data = request.args
         # get the activity keys
         activities = []
@@ -57,12 +55,10 @@ def send():
         
         query += "WHERE activities.ACTIVITYNAME in ("
         for activity in form_data:
-            # query += "activities.ACTIVITYNAME = '" + activity + "' AND "
             query += "'" + activity + "' , "
 
         # remove that last " AND " (5 characters)
         query = query[:-3]
-        # query = query[:-5]
         query += ");"
 
         print(query)
@@ -73,43 +69,15 @@ def send():
         con = sql.connect(db_path)
         con.text_factory = lambda x: str(x, 'utf-8')
         cursor = con.cursor()
-        # # cursor.execute("select name from sqlite_master where type = 'table';")
         cursor.execute(query)
         data = cursor.fetchall()
-        # names = list(map(lambda x: x[0], cursor.description))
-        # print(names)
-
+        
         return jsonify(data)
-        # results = db.session.query(Parks.name, Parks.lat, Parks.lon).all()
-        # #results = db.session.query(Parks.name, Parks.lat, Parks.lon).filter(Parks.id == '4')
-
-        # name = [result[0] for result in results]
-        # lat = [result[1] for result in results]
-        # lon = [result[2] for result in results]
-
-        # park_data = [{
-        #     "type": "scattergeo",
-        #     "locationmode": "USA-states",
-        #     "name": name,
-        #     "lat": lat,
-        #     "lon": lon,
-        #     "text": name,
-        #     "hoverinfo": "text",
-        #     "marker": {
-        #         "size": 5,
-        #         "line": {
-        #             "color": "rgb(8,8,8)",
-        #             "width": 1
-        #         },
-        #     }
-        # }]
-
-        # return jsonify(park_data)
+        
     return # This is if the requeset is not a GET method
 
 @app.route("/parks")
 def parks():
-    # return jsonify(json.load(open(os.path.join('.', 'static', 'data', 'parks.geojson' ))))
     return jsonify(json.load(open(os.path.join('.', 'static','data', 'parks.geojson'))))
 
 if __name__ == "__main__":
